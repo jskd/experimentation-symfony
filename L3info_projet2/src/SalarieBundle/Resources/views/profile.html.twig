@@ -1,0 +1,19 @@
+{% extends '@Salarie/base.html.twig' %}
+
+{% block subtitle_page_header %} Profile {% endblock subtitle_page_header %}
+
+
+{% block body %}
+
+    {{ salarie.id }}
+    {{ salarie.nom }}
+    {{ salarie.prenom }}
+    {{ salarie.dateNaissance|date("d/m/Y") }}
+    {{ salarie.sexe }}
+    {{ salarie.dateEntre|date("d/m/Y") }}
+    {{ salarie.typeContrat }}
+    {{ salarie.DureeContrat }}
+    {{ salarie.salaire }}
+
+
+{% endblock %}

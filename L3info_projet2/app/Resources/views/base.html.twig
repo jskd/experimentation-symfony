@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="{{- app.request.locale -}}">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%- block title -%}{%- endblock -%}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    {% block stylesheets %}
+        {% stylesheets filter="scssphp" output="css/base.css"
+        'components/bootstrap/css/bootstrap.css'
+        '%kernel.root_dir%/../vendor/mistic100/jquery-querybuilder/dist/css/query-builder.default.min.css'
+        'components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'
+        '%kernel.root_dir%/../vendor/seiyria/bootstrap-slider/css/bootstrap-slider.css'
+        '%kernel.root_dir%/../vendor/selectize/dist/css/selectize.bootstrap3.css'
+        '%kernel.root_dir%/../vendor/blackrockdigital/startbootstrap-sb-admin/css/sb-admin.css' %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+{%- spaceless -%}
+
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url("homepage") }}">Projet de programmation web</a>
+            </div>
+            <!-- Top Menu Items -->
+
+            {%- if app.user -%}
+
+                <ul class="nav navbar-right top-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                    class="fa fa-user"></i>{{- app.user.email -}} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ path('fos_user_change_password') }}"><i class="fa fa-fw fa-user"></i> Changement de mot de passe</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            {%- else -%}
+                <ul class="nav navbar-right top-nav">
+                    <li>
+                        <a href="{{ url("fos_user_security_login") }}"><i class="fa fa-user"></i> Connexion</a>
+                    </li>
+                </ul>
+            {%- endif -%}
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                {{ knp_menu_render('main') }}
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {%- block title_page_header -%}
+                            {%- endblock title_page_header -%}
+                            <small>
+                                {%- block subtitle_page_header -%}
+                                {%- endblock subtitle_page_header -%}
+                            </small>
+                            <span class="pull-right">
+                            {{ render(controller("AppBundle:Aide:show", { routename : app.request.attributes.get('_route') })) }}
+</span>
+                        </h1>
+                        {%- block tool_bar -%}
+                        {%- endblock tool_bar -%}
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                    {%- block body -%}
+                    {%- endblock body -%}
+
+                {%- block body_footer -%}
+                    {%- include '::footer.html.twig' -%}
+                {%- endblock body_footer -%}
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    {% block javascripts %}
+       {# {% javascripts
+        'components/jquery/jquery.js'
+        'components/jquery-ui/ui/minified/*.min.js'
+        'components/jquery-ui/ui/minified/i18n/*fr.min.js'
+        'components/bootstrap/js/*.js'
+        'components/moment/moment.js'
+        'components/bootstrap-datepicker/js/bootstrap-datepicker.js'
+        'components/bootstrap-datepicker/js/locales/bootstrap-datepicker.*.js'
+        '%kernel.root_dir%/../vendor/selectize/dist/js/standalone/selectize.js'
+        '%kernel.root_dir%/../vendor/seiyria/bootstrap-slider/js/bootstrap-slider.js'
+        '%kernel.root_dir%/../vendor/mistic100/jquery-querybuilder/dist/js/query-builder.standalone.js'
+        '%kernel.root_dir%/../vendor/mistic100/jquery-querybuilder/dist/i18n/query-builder.fr.js'
+        '%kernel.root_dir%/../vendor/nnnick/chartjs/dist/Chart.js' %}#}
+        {% javascripts filter="?jsqueeze" output="js/base.js"
+            'components/jquery/jquery.min.js'
+            'components/bootstrap/js/bootstrap.min.js'
+        %}
+            <script src="{{ asset_url }}" charset="UTF-8"></script>
+        {% endjavascripts %}
+    {% endblock %}
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            // make visible js compat toolbars site wide
+            $("[data-js-non-compat]").each(function (i, el) {
+                $(el).addClass('collapse').addClass('hidden');
+            });
+
+            $("[data-js-compat]").each(function (i, el) {
+                $(el).removeClass('collapse').removeClass('hidden');
+            });
+
+            $('[data-tip]').each(function () {
+                $(this).tooltip({
+                    html: true,
+                    placement: $(this).data('tip')
+                });
+            });
+            $('[data-toggle="dropdown"]').dropdown();
+
+            $(document).ready(function(){
+                $('[data-toggle="popover"]').popover();
+            });
+        });
+    </script>
+{%- endspaceless -%}
+</body>
+</html>

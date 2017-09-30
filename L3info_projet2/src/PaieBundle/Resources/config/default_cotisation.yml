@@ -1,0 +1,80 @@
+parameters:
+    paie_bundle:
+        default:
+            author: "Service paie"
+            title: "Fiche de paie"
+            subject: " "
+            entreprise:
+                  nom: "Usine bio-local-Equitable"
+                  adresse: "4950 Hickory Heights Drive"
+                  ville: "Baltimore, MD 21201"
+                  ape: "1001A"
+                  siret: "777 042 777 00404"
+            employer:
+                  nom: 'Non définie'
+                  adresse: "330 Cliffside Drive"
+                  ville: "East Syracuse, NY 13057"
+                  convention: "Métallurgie et chaudronnerie"
+                  ss: "2 42 42 42 777 404 42"
+            cotisation:
+                - csg_non_deductible:
+                      nom: "CSG non déductible"
+                      salariale_base: 97
+                      salariale_taux: 2.4
+                      obligatoire: true
+                - crds_non_deductible:
+                      nom: "CRDS non déductible"
+                      salariale_base: 97
+                      salariale_taux: 0.50
+                      obligatoire: true
+                - csg_deductible:
+                      nom: "CSG déductible"
+                      salariale_base: 97
+                      salariale_taux: 5.10
+                      obligatoire: true
+                - securite_sociale_assurance_maladie:
+                      nom: "Sécurité sociale Assurance maladie"
+                      salariale_taux: 0.75
+                      patronale_taux: 12.80
+                      obligatoire: true
+                - securite_sociale_assurance_veuvage:
+                      nom: "Sécurité sociale Assurance veuvage"
+                      salariale_taux: 0.30
+                      obligatoire: true
+                - assurance_vieillesse_deplafonee:
+                      nom: "Assurance vieillesse déplafonée"
+                      patronale_taux: 1.80
+                - assurance_vieillesse_plafonnee:
+                      nom: "Assurance vieillesse plafonée"
+                      salariale_taux: 6.80
+                      patronale_taux: 8.50
+                - accidents_du_travail:
+                      nom: "Accidents du travail"
+                      patronale_taux: 6.30
+                - allocation_familiales:
+                      nom: "Allocation familiales"
+                      patronale_taux: 3.45
+                - aide_au_logement_deplafonee:
+                      nom: "Aide au logement déplafonée"
+                      patronale_taux: 0.40
+                - aide_au_logement_plafonee:
+                      nom: "Aide au logement plafonée"
+                      patronale_taux: 0.10
+                - assedic_assurance_chomage_tranche_a:
+                      nom: "ASSEDIC	Assurance chômage tranche A"
+                      salariale_taux: 2.40
+                      patronale_taux: 4.00
+                      obligatoire: true
+                - assedic_assurance_chomage_tranche_ags_fngs:
+                      nom: "ASSEDIC Assurance chômage tranche AGS (FNGS)"
+                      patronale_taux: 0.30
+                      obligatoire: true
+                - contribution_solidarite_autonome:
+                      nom: "Contribution solidarité autonome"
+                      patronale_taux: 0.30
+                - taxe_apprentissage:
+                      nom: "Taxe apprentissage"
+                      patronale_taux: 0.68
+                - contribution_organisations_syndicales:
+                      nom: "Contribution organisations syndicales"
+                      patronale_taux: 0.016

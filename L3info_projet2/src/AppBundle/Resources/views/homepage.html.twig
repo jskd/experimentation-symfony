@@ -1,0 +1,392 @@
+{% extends '::base.html.twig' %}
+
+{% block title_page_header %} Accueil {% endblock %}
+{% block title %} Accueil {% endblock %}
+
+{% block body %}
+    <h2>Installation du projet</h2>
+
+    <p>Installation des dépendances:<br/>
+        <kbd>
+            L3info_projet2 $ php composer.phar install<br/>
+            L3info_projet2 $ php composer.phar update --prefer-source
+        </kbd></p>
+
+    <p>Verifiez les paramettres du serveur:
+        <kbd>
+            Fichier: L3info_projet2/app/config/parameters.yml
+        </kbd></p>
+
+    <p>Déversement des assets:
+        <kbd>
+            L3info_projet2 $ php app/console assetic:dump
+        </kbd></p>
+
+    <p>Importer la structure et les données de la base de donnée:
+        <kbd>
+            Fichier: populateBDD.sql
+        </kbd>
+
+    </p>
+
+    <p>Mise à jour de la structure
+        <kbd>
+            L3info_projet2 $ php app/console doctrine:schema:update --force
+        </kbd>
+
+    </p>
+
+    <h2>Installation d'ElasticShearch</h2>
+    <p>
+        Les fonctionnalité de recherche utilise une serveur Elasticsearch un serveur de recherche de donnée open source
+        .
+
+    </p>
+    <p>
+        Pour l'installer sur votre machine, il vous faudra la <a
+                href="https://www.elastic.co/downloads/past-releases/elasticsearch-1-7-5"> version 1.7.5
+        </a> et suivre le <a href="https://www.elastic.co/guide/en/elasticsearch/reference/1.7/_installation.html">guide
+            d'installation</a>.
+    </p>
+    <p>
+        Une fois installé et lancé, veullez verifier dans le fichier
+        <kbd>/L3info_projet2/src/RechercheBundle/Resources/config/elastica.yml</kbd>
+        le host et le port:
+    <pre>
+    clients:
+        default: { host: localhost, port: 9200 }
+</pre>
+
+    Une fois verifier il faut peupler le serveur de recherche avec la commande
+
+    <kbd>
+        L3info_projet2 $ php app/console fos:elastica:populate
+    </kbd>
+    </p>
+
+    <h2>Fonctionnalités implémentées</h2>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span> Aide
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span>
+            Annuaire
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span>
+            Générateur de fiche de paie
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span> Forum
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span>
+            Fichiers partagés
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span> Moteur
+            de recherche
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span>
+            Statistiques
+        </li>
+        <li class="list-group-item list-group-item-success"><span class="glyphicon glyphicon-ok-circle"> </span> Tableur
+        </li>
+
+
+        <li class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove-circle"> </span>
+            gestion des congées
+        </li>
+        <li class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove-circle"> </span>
+            gestion des formations
+        </li>
+        <li class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove-circle"> </span>
+            gestion des recrutements
+        </li>
+        <li class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove-circle"> </span> un
+            chat interne a l'entreprise
+        </li>
+    </ul>
+
+
+    <h3>Utilisateur de test</h3>
+    <ul>
+        <li>ROLE_USER: login=test-user mdp=pass</li>
+        <li>ROLE_SALARIE: login=test-salarie mdp=pass</li>
+        <li>ROLE_MODERATOR: login=test-moderator mdp=pass</li>
+        <li>ROLE_SERVICE_PAIE: test-service_paie mdp=pass</li>
+        <li>ROLE_ADMIN: test-admin mdp=pass</li>
+        <li>ROLE_SUPER_ADMIN: test-super_admin mdp=pass</li>
+    </ul>
+
+    <h3>Aide</h3>
+    <p>Pour le module d'aide, nous avons utilisé les paramétres du service container. Celà permet d'avoir un fichier de
+        paramettrage externe au format .yml ou .xml.</p>
+    <p>Configuration de l'aide:
+        <kbd>
+            @AppBundle/Resources/config/aide.xml
+        </kbd><br/>
+        Les keys correpondent au nom de la route.
+    </p>
+    <pre>{% filter escape %}
+<?xml version="1.0" encoding="UTF-8" ?>
+            <container xmlns="http://symfony.com/schema/dic/services"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+                <parameters>
+                    <parameter key="app_aide" type="collection">
+                        <parameter key="salarie_annuaire">
+                            Saisisez les premiers lettre pour rechercher un utlisateur, attention si aucun resultat
+                            apparait il est
+                            possible que le serveur elasticShearch ne soit pas installé. Referez vous au readme.
+                        </parameter>
+
+                        [...]
+
+                    </parameter>
+                </parameters>
+            </container>{% endfilter %}
+</pre>
+    {% image '@AppBundle/Resources/public/images/aide.png' %}
+    <img src="{{ asset_url }}" alt="aide exemple"/>
+    {% endimage %}
+
+
+    <h3>Annuaire et moteur de recherche</h3>
+
+    <p>Pour le module de recherche nous avons choisi d'utiliser elastic search, un serveur de recherche de donnée open
+        source.
+        Ce module affiche des sugestions <strong>de manière asynchrone</strong> à chaque portion de text écrite dans la
+        barre de recherche en fonction des
+        filtres choisi par l'utilisateur.
+    </p>
+
+    {% image '@AppBundle/Resources/public/images/recherche.png' %}
+    <img src="{{ asset_url }}" alt="recherche"/>
+    {% endimage %}
+
+
+    <p>
+        Mapping de la recherche:
+        <kbd>
+            @RechercheBundle\Resources\config\elastica.yml
+        </kbd>
+    </p>
+    <div class="alert alert-warning">
+        Ne pas oublier mettre à jour le serveur elestic réguliérement avec:
+        <kbd>
+            L3info_projet2 $ php app/console fos:elastica:populate
+        </kbd>
+    </div>
+
+    <h3>Générateur de fiche de paie</h3>
+
+
+    <div class="alert alert-danger">
+        Ce module est réservé aux: ROLE_SERVICE_PAIE, ROLE_ADMIN, ROLE_SUPER_ADMIN
+    </div>
+
+
+
+    <p>D'abord il faut choisir un salarie</p>
+
+
+    {% image '@AppBundle/Resources/public/images/paie_1.png' %}
+    <img src="{{ asset_url }}" alt="paie 1"/>
+    {% endimage %}
+
+    <p>Si aucune fiche de paie n'a été généré sur cette utilisateur, elle peut être généré en suivant les régles
+        d'initlisation.</p>
+
+
+    {% image '@AppBundle/Resources/public/images/paie_2.png' %}
+    <img src="{{ asset_url }}" alt="paie 2"/>
+    {% endimage %}
+    <p> Les régles d'initlisation sont définie dans:
+
+        <kbd>
+            @PaieBundle\Resources\config\default_cotisation.yml
+        </kbd> <br/>
+
+    <pre>{% filter escape %}
+
+            parameters:
+            paie_bundle:
+
+            [...]
+
+            default:
+            cotisation:
+            - csg_non_deductible:
+            nom: "CSG non déductible"
+            salariale_base: 97
+            salariale_taux: 2.4
+            obligatoire: true
+            - crds_non_deductible:
+            nom: "CRDS non déductible"
+            salariale_base: 97
+            salariale_taux: 0.50
+            obligatoire: true
+            [...]
+        {% endfilter %}
+
+</pre>
+    </p>
+    <p>
+        Une fois initialisé, il est possible de modifier les cotisation et de générer une fiche de paie.
+    </p>
+
+
+    {% image '@AppBundle/Resources/public/images/paie_3.png' %}
+    <img src="{{ asset_url }}" alt="paie 3"/>
+    {% endimage %}
+
+
+    <div class="alert alert-info">
+        Remarque: Les cotisation obligatoire ne peuvent pas être supprimé.
+    </div>
+
+
+    {% image '@AppBundle/Resources/public/images/paie_4.png' %}
+    <img src="{{ asset_url }}" alt="paie 4"/>
+    {% endimage %}
+
+
+    <h3>Forum</h3>
+
+    <p>
+        Le forum est bassé sur le bundle CCDNForumForumBundle. Les templates ainsi que certains formulaire ont été
+        adapté.
+    </p>
+
+    {% image '@AppBundle/Resources/public/images/forum_1.png' %}
+    <img src="{{ asset_url }}" alt="paie 4"/>
+    {% endimage %}
+
+    {% image '@AppBundle/Resources/public/images/forum_2.png' %}
+    <img src="{{ asset_url }}" alt="paie 4"/>
+    {% endimage %}
+
+    <p>
+        Il existe plusieurs autorisation d'accès:
+    </p>
+    <table class="table-bordered">
+        <tr>
+            <td>Categorie</td>
+            <td>-</td>
+            <td>ROLE_USER</td>
+            <td>ROLE_SALARIE</td>
+            <td>ROLE_MODERATOR</td>
+            <td>ROLE_SERVICE_PAIE</td>
+            <td>ROLE_ADMIN</td>
+            <td>ROLE_SUPER_ADMIN</td>
+        </tr>
+        <tr>
+            <td>Discussion privée</td>
+            <td>Aucun</td>
+            <td>Aucun</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+        </tr>
+        <tr>
+            <td>Discussion publique</td>
+            <td>Lecture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+        </tr>
+        <tr>
+            <td>Discussion moderateur</td>
+            <td>Aucun</td>
+            <td>Aucun</td>
+            <td>Aucun</td>
+            <td>Lecture / Ecriture</td>
+            <td>Aucun</td>
+            <td>Lecture / Ecriture</td>
+            <td>Lecture / Ecriture</td>
+        </tr>
+    </table>
+
+    <h3>Partage de fichier</h3>
+
+
+    <div class="alert alert-danger">
+        Ce module est réservé aux utilisateur enregistré
+    </div>
+
+    {% image '@AppBundle/Resources/public/images/forum_1.png' %}
+    <img src="{{ asset_url }}" alt="fichier 1"/>
+    {% endimage %}
+
+    {% image '@AppBundle/Resources/public/images/forum_2.png' %}
+    <img src="{{ asset_url }}" alt="fichier 2"/>
+    {% endimage %}
+
+
+    <h3>Statistique</h3>
+
+    <p>
+        Le module de statistique fonctionne de manière asynchrone. Les critéres et la statistique est envoyé puis
+        le graphe correspondant est affiché.
+    </p>
+
+
+    {% image '@AppBundle/Resources/public/images/statistique.png' %}
+    <img src="{{ asset_url }}" alt="statisitique"/>
+    {% endimage %}
+
+    <p>Il est possible de créer des critére complexe</p>
+
+    {% image '@AppBundle/Resources/public/images/statistique_2.png' %}
+    <img src="{{ asset_url }}" alt="statisitique"/>
+    {% endimage %}
+
+
+    <h3>Tableur</h3>
+
+
+    {% image '@AppBundle/Resources/public/images/tableur.png' %}
+    <img src="{{ asset_url }}" alt="statisitique"/>
+    {% endimage %}
+
+
+    <h3>Dépendances</h3>
+
+<p>Ce projet utilise les logiciels open source suivant:</p>
+
+    <ul>
+        {% set source = {
+        "https://symfony.com/" : "Symfony",
+        "https://github.com/FriendsOfSymfony/FOSUserBundle/" : "FOS User Bundle",
+        "http://www.github.com/codeconsortium/CCDNForumForumBundle": "CCDN Forum Bundle",
+        "https://github.com/KnpLabs/KnpMenuBundle": "KNP Menu Bundle",
+        "https://github.com/components/jquery" : "jQuery",
+        "https://github.com/components/jqueryui": "jQuery UI",
+        "https://github.com/caprica/jquery-orgchart" : "Jquery Orgchart",
+        "https://github.com/mistic100/jQuery-QueryBuilder" : "jQuery QueryBuilder",
+        "https://github.com/selectize/selectize.js" : "Selectize",
+        "https://github.com/moment/moment" : "Moment",
+        "https://github.com/chartjs/Chart.js" : "Chart.js",
+        "https://github.com/twbs/bootstrap" :  "Bootstrap",
+        "https://github.com/eternicode/bootstrap-datepicker" : "Bootstrap Datepicker",
+        "https://github.com/seiyria/bootstrap-slider" : "Bootstrap Slider",
+        "https://github.com/BlackrockDigital/startbootstrap-sb-admin" : "SB Admin",
+        "https://github.com/FriendsOfSymfony/FOSElasticaBundle": "FOS Elastica bundle",
+        "https://github.com/whiteoctober/WhiteOctoberTCPDFBundle" : "Whiteoctober tcpdf bundle",
+        "https://github.com/6pac/SlickGrid" : "6pac Slickgrid",
+        } %}
+        {% for lien, nom in source %}
+            <li><strong>{{ nom }}</strong> {{ lien }} </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+
+
+
+
+
+

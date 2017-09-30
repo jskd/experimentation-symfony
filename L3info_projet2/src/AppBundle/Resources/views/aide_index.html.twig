@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{%- block title_page_header -%}
+    Aide
+{%- endblock title_page_header -%}
+
+{% block subtitle_page_header %}
+    Configuration
+{% endblock subtitle_page_header %}
+
+
+{% block body %}
+
+    <p>Pour configurer les aides, il faut modifier le fichier: @AppBundle/Resources/config/aide.xml</p>
+
+    <pre>{% filter escape %}{{  include( '@App/../config/aide.xml') }}{% endfilter %}</pre>
+
+{% endblock %}

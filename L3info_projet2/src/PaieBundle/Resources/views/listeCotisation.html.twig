@@ -1,0 +1,69 @@
+{% extends '@Paie/layout.html.twig' %}
+
+{% block subtitle_page_header %} Cotisation {% endblock %}
+{% block title %}{{- parent() -}}- Cotisation {% endblock %}
+
+
+{% block body %}
+
+
+    <div class="well">
+        <a type="button" class="btn btn-primary"
+           href="{{ path('paie_modification_brut', { "id": cotisations[0].getSalarie().getId() }) }}">Modification</a>
+        Salaire brut:{{ cotisations[0].getSalarie().getSalaire()|number_format(2, ',', ' ') }}&euro;
+
+    </div>
+
+
+
+    <table class="table-responsive table-condensed">
+
+        <tr>
+            <th> &nbsp;</th>
+            <th colspan="2">Part salariale</th>
+            <th colspan="2">Part patronale</th>
+            <th> &nbsp;</th>
+            <th> &nbsp;</th>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <th>Base</th>
+            <th>Taux</th>
+            <th>Base</th>
+            <th>Taux</th>
+            <th> &nbsp;</th>
+            <th> &nbsp;</th>
+        </tr>
+        {% for cotisation in cotisations %}
+            <tr>
+                <td class="nom">{{ cotisation.getNom() }}</td>
+                <td class="taux">{{ cotisation.getSalarialeBase() }}%</td>
+                <td class="taux">{{ cotisation.getSalarialeTaux() }}%</td>
+                <td class="taux">{{ cotisation.getPatronaleBase() }}%</td>
+                <td class="taux">{{ cotisation.getPatronaleTaux() }}%</td>
+                <td><a type="button" class="btn btn-primary"
+                       href="{{ path('cotisation_modification', { "id": cotisation.getId() }) }}">Modification</a></td>
+                <td>
+                    {% if cotisation.getObligatoire() == false %}
+                        <a type="button" class="btn btn-danger"
+                           href="{{ path('cotisation_suppression', { "id": cotisation.getId() }) }}">Suppression</a>
+                    {% else %}
+                        <a type="button" class="btn btn-danger" disabled="disabled" data-toggle="popover"
+                           data-content="Cotisation obligatoire">Suppression</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+
+    </table>
+
+    <div class="well">
+        <a type="button" class="btn btn-primary"
+           href="{{ path('cotisation_nouveau', { "id": cotisations[0].getSalarie().getId() }) }}">Nouvelle
+            cotisation</a>
+        <a type="button" class="btn btn-success"
+           href="{{ path('paie_bulletin', { "id": cotisations[0].getSalarie().getId() }) }}">Génération de bulletin de
+            paie</a>
+    </div>
+{% endblock %}

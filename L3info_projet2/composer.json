@@ -1,0 +1,142 @@
+{
+  "name": "jerome_skoda/.checkout",
+  "license": "proprietary",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    },
+    "classmap": [
+      "app/AppKernel.php",
+      "app/AppCache.php"
+    ]
+  },
+  "require": {
+    "php": ">=5.3.9",
+    "symfony/symfony": "2.8.*",
+    "doctrine/orm": "^2.4.8",
+    "doctrine/doctrine-bundle": "~1.4",
+    "symfony/swiftmailer-bundle": "~2.3",
+    "symfony/monolog-bundle": "~2.4",
+    "symfony/assetic-bundle" : ">=2.7.0",
+    "sensio/distribution-bundle": "~5.0",
+    "sensio/framework-extra-bundle": "^3.0.2",
+    "incenteev/composer-parameter-handler": "~2.0",
+    "spreadsheets/wickedgrid": "dev-master",
+    "friendsofsymfony/user-bundle": "dev-master",
+    "components/jquery": ">=1.9.0",
+    "moment/moment": ">=2.6.0",
+    "twbs/bootstrap": ">=3.1.0",
+    "mistic100/jquery-querybuilder" : ">=2.3.2",
+    "caprica/jquery-orgchart" : "dev-master",
+    "nnnick/chartjs" : "dev-master",
+    "eternicode/bootstrap-datepicker" : ">=1.2.0",
+    "seiyria/bootstrap-slider" : "dev-master",
+    "selectize" : "dev-master",
+    "codeconsortium/ccdn-forum-bundle": "dev-master",
+    "blackrockdigital/startbootstrap-sb-admin": "dev-master",
+    "knplabs/knp-menu-bundle": "^2.0",
+    "friendsofsymfony/elastica-bundle": "^3.1",
+    "components/jqueryui": "^1.11",
+    "leafo/scssphp": "^0.6.3",
+    "patchwork/jsqueeze": "^2.0",
+    "6pac/slickgrid" :  "dev-master",
+    "whiteoctober/tcpdf-bundle": "^1.0"
+  },
+  "require-dev": {
+    "sensio/generator-bundle": "~3.0",
+    "symfony/phpunit-bridge": "~2.7"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "caprica/jquery-orgchart",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/caprica/jquery-orgchart.git",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "spreadsheets/wickedgrid",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/Spreadsheets/WickedGrid.git",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "selectize",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/selectize/selectize.js.git",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "blackrockdigital/startbootstrap-sb-admin",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/BlackrockDigital/startbootstrap-sb-admin.git",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "6pac/slickgrid",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/6pac/SlickGrid.git",
+          "type": "git",
+          "reference": "origin/master"
+        }
+      }
+    }
+  ],
+  "scripts": {
+    "post-install-cmd": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+    ],
+    "post-update-cmd": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+    ]
+  },
+  "config": {
+    "component-dir": "web/components",
+    "bin-dir": "bin"
+  },
+  "extra": {
+    "symfony-app-dir": "app",
+    "symfony-web-dir": "web",
+    "symfony-assets-install": "relative",
+    "incenteev-parameters": {
+      "file": "app/config/parameters.yml"
+    }
+  }
+}

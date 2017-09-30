@@ -1,0 +1,43 @@
+paie:
+    resource: "@PaieBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+recherche:
+    resource: "@RechercheBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+document:
+    resource: "@DocumentBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+salarie:
+    resource: "@SalarieBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+forum:
+    resource: "@ForumBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+CCDNForumForumBundle:
+    resource: "@CCDNForumForumBundle/Resources/config/routing.yml"
+
+ccdn_homepage:
+    path: /forum
+    defaults: { _controller: CCDNForumForumBundle:UserCategory:index, _locale: fr, forumName: default }

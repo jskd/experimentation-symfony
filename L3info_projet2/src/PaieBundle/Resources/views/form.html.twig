@@ -1,0 +1,21 @@
+{% extends "@Paie/layout.html.twig" %}
+
+{% if title is defined %}
+    {% block subtitle_page_header %} {{ title }} {% endblock %}
+    {% block title %}{{- parent() -}}- {{ title }} {% endblock %}
+{% endif %}
+
+{% block body %}
+
+    {% if message is defined %}
+        <div class="well">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

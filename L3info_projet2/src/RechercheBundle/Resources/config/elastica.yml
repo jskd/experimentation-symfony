@@ -1,0 +1,52 @@
+fos_elastica:
+    default_manager: orm
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app:
+            types:
+                salarie:
+                    mappings:
+                        nom: { boost: 4 }
+                        prenom: { boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: SalarieBundle\Entity\Salarie
+                        provider: ~
+                        finder: ~
+                document:
+                    mappings:
+                        titre: { boost: 4 }
+                        description: { boost: 2 }
+                        filename: { boost: 3 }
+                        publique: ~
+                    persistence:
+                        driver: orm
+                        model: DocumentBundle\Entity\Document
+                        provider: ~
+                        finder: ~
+                forum_topic:
+                    mappings:
+                        title: ~
+                    persistence:
+                        driver: orm
+                        model: CCDNForum\ForumBundle\Entity\Topic
+                        provider: ~
+                        finder: ~
+                forum_board:
+                    mappings:
+                        name:  { boost: 4 }
+                        description: { boost: 2 }
+                    persistence:
+                        driver: orm
+                        model: CCDNForum\ForumBundle\Entity\Board
+                        provider: ~
+                        finder: ~
+                forum_category:
+                    mappings:
+                        name:  ~
+                    persistence:
+                        driver: orm
+                        model: CCDNForum\ForumBundle\Entity\Category
+                        provider: ~
+                        finder: ~

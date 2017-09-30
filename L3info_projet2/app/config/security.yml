@@ -1,0 +1,38 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface:
+            algorithm:            pbkdf2
+            hash_algorithm:       sha256
+            encode_as_base64:     true
+            iterations:           1000
+            key_length:           32
+
+    role_hierarchy:
+        ROLE_SALARIE:       [ROLE_USER]
+        ROLE_MODERATOR:     [ROLE_USER, ROLE_SALARIE]
+        ROLE_SERVICE_PAIE:  [ROLE_USER, ROLE_SALARIE]
+        ROLE_ADMIN:         [ROLE_SERVICE_PAIE, ROLE_MODERATOR, ROLE_SALARIE]
+        ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_SERVICE_PAIE, ROLE_MODERATOR, ROLE_SALARIE]
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        #thruway:
+        #    security: false
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
+            logout:       true
+            anonymous:    true
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: ROLE_ADMIN }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }

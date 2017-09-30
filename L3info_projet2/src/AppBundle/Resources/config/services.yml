@@ -1,0 +1,14 @@
+imports:
+    - { resource: "@AppBundle/Resources/config/aide.xml" }
+    - { resource: "@AppBundle/Resources/config/paginator.yml" }
+    - { resource: "@AppBundle/Resources/config/assetic.yml" }
+    - { resource: "@AppBundle/Resources/config/doctrine.yml" }
+    - { resource: "@AppBundle/Resources/config/menu.yml" }
+    - { resource: "@AppBundle/Resources/config/twig.yml" }
+
+services:
+    app.menu_builder:
+        class: AppBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }

@@ -1,0 +1,39 @@
+{%- spaceless -%}
+    <hr/>
+    <footer class="row text-center page-footer">
+        <div class="col-md-12">
+            <p>
+                Propulsés par de nombreux logiciels open source:
+
+                {% set source = {
+                "https://symfony.com/" : "Symfony",
+                "https://github.com/FriendsOfSymfony/FOSUserBundle/" : "FOS User Bundle",
+                "http://www.github.com/codeconsortium/CCDNForumForumBundle": "CCDN Forum Bundle",
+                "https://github.com/KnpLabs/KnpMenuBundle": "KNP Menu Bundle",
+                "https://github.com/components/jquery" : "jQuery",
+                "https://github.com/components/jqueryui": "jQuery UI",
+                "https://github.com/caprica/jquery-orgchart" : "Jquery Orgchart",
+                "https://github.com/mistic100/jQuery-QueryBuilder" : "jQuery QueryBuilder",
+                "https://github.com/selectize/selectize.js" : "Selectize",
+                "https://github.com/moment/moment" : "Moment",
+                "https://github.com/chartjs/Chart.js" : "Chart.js",
+                "https://github.com/twbs/bootstrap" :  "Bootstrap",
+                "https://github.com/eternicode/bootstrap-datepicker" : "Bootstrap Datepicker",
+                "https://github.com/seiyria/bootstrap-slider" : "Bootstrap Slider",
+                "https://github.com/BlackrockDigital/startbootstrap-sb-admin" : "SB Admin",
+                "https://github.com/FriendsOfSymfony/FOSElasticaBundle": "FOS Elastica bundle",
+                "https://github.com/whiteoctober/WhiteOctoberTCPDFBundle" : "Whiteoctober tcpdf bundle",
+                "https://github.com/6pac/SlickGrid" : "6pac Slickgrid",
+                } %}
+                {% for lien, nom in source %}
+                    <a rel="friend" target="_blank" href="{{ lien }}">{{ nom }}</a>
+                    {% if not loop.last %} | {% endif %}
+                {% endfor %}
+            </p>
+            <p>
+                Copyright <a target="_blank" class="navbar-link" href="http://www.univ-paris-diderot.fr/">Projet de
+                    programmation web: Université Paris Diderot</a> - 2016
+            </p>
+        </div>
+    </footer>
+{%- endspaceless -%}

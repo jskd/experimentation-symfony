@@ -1,0 +1,25 @@
+assetic:
+    filters:
+        jsqueeze: ~
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+
+    debug:          %kernel.debug%
+    use_controller: false
+
+    assets:
+        glyphicons-halflings-regular-eot:
+            inputs: "%kernel.root_dir%/../vendor/components/bootstrap/fonts/glyphicons-halflings-regular.eot"
+            output: "fonts/glyphicons-halflings-regular.eot"
+        glyphicons-halflings-regular-woff:
+            inputs: '%kernel.root_dir%/../vendor/components/bootstrap/fonts/glyphicons-halflings-regular.woff'
+            output: 'fonts/glyphicons-halflings-regular.woff'
+        glyphicons-halflings-regular-svg:
+            inputs: '%kernel.root_dir%/../vendor/components/bootstrap/fonts/glyphicons-halflings-regular.svg'
+            output: 'fonts/glyphicons-halflings-regular.svg'
+        glyphicons-halflings-regular-woff2:
+            inputs: '%kernel.root_dir%/../vendor/components/bootstrap/fonts/glyphicons-halflings-regular.woff2'
+            output: 'fonts/glyphicons-halflings-regular.woff2'
+        glyphicons-halflings-regular-ttf:
+            inputs: '%kernel.root_dir%/../vendor/components/bootstrap/fonts/glyphicons-halflings-regular.ttf'
+            output: 'fonts/glyphicons-halflings-regular.ttf'

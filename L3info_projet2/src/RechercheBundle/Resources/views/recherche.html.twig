@@ -1,0 +1,145 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Recherche {% endblock %}
+{% block title_page_header %} Recherche {% endblock %}
+
+{% block stylesheets %}
+    {{- parent() -}}
+    {% stylesheets
+    '%kernel.root_dir%/../vendor/selectize/dist/css/selectize.bootstrap3.css' %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <form class="form-horizontal" id="finder-form"  method="post" action="{{ path('moteur_recherche_resultat') }}">
+        <div class="form-group">
+            <div class="col-sm-10">
+                <label class="checkbox-inline"><input type="checkbox" id="salarie" {% if salarie == true %} checked="checked" {% endif %}>Salarie</label>
+                <label class="checkbox-inline"><input type="checkbox" id="document" {% if document == true %} checked="checked" {% endif %}>Document
+                    (publique)</label>
+                <label class="checkbox-inline"><input type="checkbox" id="topic" {% if topic == true %} checked="checked" {% endif %}>Forum sujet</label>
+                <label class="checkbox-inline"><input type="checkbox" id="board" {% if board == true %} checked="checked" {% endif %}>Forum tableau</label>
+                <label class="checkbox-inline"><input type="checkbox" id="categorie" {% if categorie == true %} checked="checked" {% endif %}>Forum
+                    categorie</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10">
+                <input id="select_finder" name="url" placeholder="Recherche"/>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-get">Chercher</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{- parent() -}}
+    {% javascripts
+    '%kernel.root_dir%/../vendor/selectize/dist/js/standalone/selectize.js' %}
+    <script src="{{ asset_url }}" charset="UTF-8"></script>
+    {% endjavascripts %}
+    <script>
+
+        var selectizeconf =
+
+        {
+            valueField: 'valueField',
+            labelField: 'labelField',
+            persist: false,
+            maxItems: 1,
+            searchField: ['searchField'],
+            options: [],
+            create: false,
+            render: {
+                option: function (item, escape) {
+                    switch (item.type) {
+                        case "document":
+                            return '<div>' +
+                                    '<span class="label label-primary">Document</span>&nbsp;' +
+                                    '<strong>' + escape(item.label.titre) + '</strong>' +
+                                    '<span class="pull-right">' +
+                                    '<span class="label label-default">Nom du fichier: ' + escape(item.label.filename) + ' </span>' +
+                                    '</span>' +
+                                    '<br /><span style="color: #808080">' + escape(item.label.description) + '</span>' +
+                                    '</div>';
+                            break;
+                        case "salarie":
+                            return '<div>' +
+                                    '<span class="label label-success">Salarié</span>&nbsp;' +
+                                    '<strong>' + escape(item.label.prenom) + ' ' + escape(item.label.nom).toUpperCase() + '</strong>' +
+                                    '<span class="pull-right">' +
+                                    '<span class="label label-default">Age: ' + escape(item.label.age) + ' ans</span>&nbsp' +
+                                    '<span class="label label-default">Sexe: ' + escape(item.label.sexe) + '</span>' +
+                                    '</span>' +
+                                    '</div>';
+                            break;
+                        case "topic":
+                            return '<div>' +
+                                    '<span class="label label-info">Sujet</span>&nbsp;' +
+                                    '<strong>' + escape(item.label.title) + '</strong>' +
+                                    '<span class="pull-right">' +
+                                    '<span class="label label-default">Vue: ' + escape(item.label.view) + '</span>&nbsp' +
+                                    '<span class="label label-default">Réponse: ' + escape(item.label.reply) + ' </span>' +
+                                    '</span>' +
+                                    '</div>';
+                            break;
+                        case "board":
+                            return '<div>' +
+                                    '<span class="label label-warning">Tableau</span>&nbsp;' +
+                                    '<strong>' + escape(item.label.name) + '</strong>' +
+                                    '<span class="pull-right">' +
+                                    '<span class="label label-default">Sujet: ' + escape(item.label.topic) + '</span>&nbsp' +
+                                    '<span class="label label-default">Réponse: ' + escape(item.label.post) + ' </span>' +
+                                    '</span>' +
+                                    '<br /><span style="color: #808080">' + escape(item.label.description) + '</span>' +
+                                    '</div>';
+                            break;
+                        case "category":
+                            return '<div>' +
+                                    '<span class="label label-danger">Catégorie</span>&nbsp;' +
+                                    '<strong>' + escape(item.label.name) + '</strong>' +
+                                    '</div>';
+                            break;
+                        default:
+                            return '<div>' + escape(item.label) + '</div>';
+                    }
+                }
+            },
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('moteur_recherche_finder', {}) }}",
+                    dataType: 'json',
+                    data: {
+                        'query': query,
+                        'salarie': $('#salarie').prop('checked'),
+                        'document': $('#document').prop('checked'),
+                        'topic': $('#topic').prop('checked'),
+                        'board': $('#board').prop('checked'),
+                        'categorie': $('#categorie').prop('checked')
+                    },
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        options = [];
+                        callback(res);
+                    }
+                });
+            }
+        };
+
+        $('#select_finder').val(null);
+        var $select = $('#select_finder').selectize(selectizeconf);
+
+        $("input:checkbox").change(function () {
+            $('#select_finder')[0].selectize.destroy();
+            $('#select_finder').selectize(selectizeconf);
+        });
+
+    </script>
+{% endblock %}

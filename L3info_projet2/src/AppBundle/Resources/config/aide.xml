@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="app_aide" type="collection">
+            <parameter key="homepage">
+                C'est une page d'acceil, il n'y a rien de particulier
+            </parameter>
+            <parameter key="aide_homepage">
+                Aideception! besoin d'aide pour lire la page sur l'aide?
+            </parameter>
+            <parameter key="salarie_annuaire">
+                Saisisez les premiers lettre pour rechercher un utlisateur, attention si aucun resultat apparait il est
+                possible que le serveur elasticShearch ne soit pas installé. Referez vous au readme.
+            </parameter>
+
+            <parameter key="salarie_annuaire">
+                Saisisez les premiers lettre pour rechercher un utlisateur, attention si aucun resultat apparait il est
+                possible que le serveur elasticShearch ne soit pas installé. Referez vous au readme.
+            </parameter>
+            <parameter key="paie_index">
+                Recherchez un utilisateur pour pouvoir generer une fiche de paie
+            </parameter>
+            <parameter key="ccdn_homepage">
+                Choisisez une categorie ou un tableau pour naviguer sur le forum. Il est possible que vous n'avez pas les autorisation necessaire
+            </parameter>
+            <parameter key="ccdn_homepage">
+                Choisisez une categorie ou un tableau pour naviguer sur le forum. Il est possible que vous n'avez pas les autorisation necessaire
+            </parameter>
+            <parameter key="document_index">
+                Vous pouvez voir les documents publique ainsi que vos documents
+            </parameter>
+            <parameter key="moteur_recherche">
+                Saisisez les premiers lettre pour rechercher un utlisateur, attention si aucun resultat apparait il est
+                possible que le serveur elasticShearch ne soit pas installé. Referez vous au readme.
+            </parameter>
+            <parameter key="document_suppression">
+                Choisez oui pour supprimer, non pour... ne pas supprimer
+            </parameter>
+            <parameter key="document_liste">
+                Vous pouvez ajouter, modifier, supprimer les document en choissisant le bouton correpondant
+            </parameter>
+            <parameter key="salarie_statistiques">
+                Saisisez la statistique etudié et vos condition puis generer le graphique.
+            </parameter>
+            <parameter key="tableur">
+                C'est comme excel (enfin presque)
+            </parameter>
+        </parameter>
+    </parameters>
+</container>

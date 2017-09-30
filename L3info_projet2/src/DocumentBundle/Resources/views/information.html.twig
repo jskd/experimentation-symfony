@@ -1,0 +1,23 @@
+{% extends "@Document/base.html.twig" %}
+
+{% block body %}
+    {# total items count #}
+
+
+    {{ document.proprietaire }}
+
+    {{ document.titre }}
+    {{ document.description }}
+    {{ document.creationDate | date('Y-m-d H:i:s') }}
+    {{ document.filename }}
+
+    {{ document.publique }}
+
+    {% if document.publique == true  %}
+        <a type="button" class="btn btn-default"
+           href="{{ absolute_url(path('document_telechargement', { "id": document.id })) }}">Télécharger le document</a>
+    {% else %}
+        <a type="button" class="btn btn-default"
+           href="{{ absolute_url(path('document_telechargement', { "id": document.id, "key": clef })) }}">Télécharger le document</a>
+    {% endif %}
+{% endblock %}

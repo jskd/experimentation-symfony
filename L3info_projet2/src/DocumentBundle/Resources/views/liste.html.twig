@@ -1,0 +1,25 @@
+{% extends "@Document/base.html.twig" %}
+
+{% block subtitle_page_header %} Index {% endblock %}
+
+
+{% block body %}
+
+    {{ render(url('document_liste_publique')) }}
+
+
+    {% if app.user %}
+
+        {{ render(url('document_liste_prive')) }}
+
+        {%  else %}
+
+            <h2>Mes documents</h2>
+
+       <p> Vous devez être connecté. </p>
+
+
+    {% endif %}
+
+
+{% endblock %}

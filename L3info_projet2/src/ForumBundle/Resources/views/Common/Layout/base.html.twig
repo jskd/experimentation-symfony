@@ -1,0 +1,52 @@
+{% extends LayoutTemplate %}
+
+
+
+{% block stylesheets %}
+    {{ parent() }}
+	{% block stylesheets_extra %}
+	{% endblock stylesheets_extra %}
+{% endblock stylesheets %}
+
+
+
+{% block javascripts %}
+	{{ parent() }}
+	{% block javascripts_extra %}
+	{% endblock javascripts_extra %}
+{% endblock javascripts %}
+
+
+
+{% block tool_bar %}
+	{%- spaceless -%}
+		{%- block crumb_trail -%}
+			{%- if crumbs is defined -%}
+				{%- include 'CCDNForumForumBundle:Common:Layout/crumbs.html.twig' with {'crumbs': crumbs } -%}
+			{%- endif -%}
+		{%- endblock crumb_trail -%}
+	{%- endspaceless -%}
+{% endblock tool_bar %}
+
+{% if crumbs is defined %}
+	{% block subtitle_page_header %}
+		{{ crumbs.getTrail|last.label }}
+	{% endblock subtitle_page_header %}
+{% endif %}
+
+{% block sidebar %}
+	{%- spaceless -%}
+    	{{ parent() }}
+	{%- endspaceless -%}
+{% endblock %}
+
+{% block body %}
+	{%- spaceless -%}
+
+    {%- include 'CCDNForumForumBundle:Common:Layout/flashes.html.twig' -%}
+
+	{%- block body_content -%}
+	{%- endblock body_content -%}
+
+	{%- endspaceless -%}
+{% endblock body %}

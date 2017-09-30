@@ -1,0 +1,231 @@
+<html>
+<head>
+    <style>
+        td {
+            margin: 1px;
+            padding: 1px;
+            border: none;
+        }
+
+        .nom {
+            width: 40%;
+        }
+
+        .base {
+            width: 12%;
+            text-align: right;
+        }
+
+        .taux {
+            width: 6%;
+            text-align: right;
+        }
+
+        .montant {
+            width: 12%;
+            text-align: right;
+        }
+
+        tr.smallspace > td {
+            height: 20px;
+        }
+
+        tr.bigspace > td {
+            height: 40px;
+        }
+
+        .label {
+            font-size: larger;
+            padding: 10px 100px;
+            background-color: #67b168;
+        }
+
+        .light {
+
+            background-color: lightgreen;
+        }
+
+        tr.header {
+            background-color: lightgrey;
+            font-size: large;
+            text-align: center;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<h1>Bulletin de paie: Du 01/{{ "now"|date("m/Y") }} au 31/{{ "now"|date("m/Y") }}</h1>
+
+<table>
+    <tr>
+        <td colspan="2" style="font-size: larger; text-align: center">Employeur</td>
+        <td colspan="2" style="font-size: larger; text-align: center">Salarié</td>
+    </tr>
+    <tr>
+        <td>Nom:</td>
+        <td>{{ entreprise.nom }}</td>
+        <td>Nom et Prénom:</td>
+        <td>{% if user.sexe == 'F' %}Md.{% else %}M.{% endif %} {{ user.prenom }} {{ user.nom|upper }}</td>
+    </tr>
+    <tr>
+        <td>Adresse:</td>
+        <td>{{ entreprise.adresse }}</td>
+        <td>Adresse:</td>
+        <td>{{ employer.adresse }}</td>
+    </tr>
+    <tr>
+        <td>CP et Ville:</td>
+        <td>{{ entreprise.ville }}</td>
+        <td>CP et Ville:</td>
+        <td>{{ employer.ville }}</td>
+    </tr>
+    <tr>
+        <td>Numéro APE:</td>
+        <td>{{ entreprise.ape }}</td>
+        <td>Convention collective:</td>
+        <td>{{ employer.convention }}</td>
+    </tr>
+    <tr>
+        <td>Numéro SIRET:</td>
+        <td>{{ entreprise.siret }}</td>
+        <td>Numéro SS:</td>
+        <td>{{ employer.ss }}</td>
+    </tr>
+</table>
+
+
+<table>
+    <tr>
+        <td class="nom"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+    </tr>
+    <tr>
+        <td class="nom"></td>
+        <td colspan="5" class="label">Salaire brut:</td>
+        <td class="label">{{ brut  |number_format(2, ',', ' ') }}&euro;</td>
+    </tr>
+    <tr>
+        <td class="nom"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+    </tr>
+    <tr class="header">
+        <td style="width: 40%"></td>
+        <td colspan="2" style="width: 30%">Part salariale</td>
+        <td colspan="2" style="width: 30%">Part patronale</td>
+    </tr>
+    <tr class="header">
+        <td class="nom">Cotisations</td>
+        <td class="base">Base</td>
+        <td class="taux">Taux</td>
+        <td class="montant">Montant</td>
+        <td class="base">Base</td>
+        <td class="taux">Taux</td>
+        <td class="montant">Montant</td>
+    </tr>
+    {% set totalSalariale = 0 %}
+    {% set totalPatronale = 0 %}
+    {% set montant_csg = 0 %}
+    {% for cotisation in cotisations %}
+        {% if loop.last %}
+            <tr class="smallspace">
+        {% else %}
+            <tr>
+        {% endif %}
+        <td class="nom">{{ cotisation.getNom() }}</td>
+        {% if cotisation.getSalarialeTaux() != 0 %}
+            {% set montantSalariale = (brut * cotisation.getSalarialeBase()/100 * cotisation.getSalarialeTaux()/100 ) %}
+            {% set totalSalariale = totalSalariale + montantSalariale %}
+            {% if loop.first %}
+                {% set montant_csg = montantSalariale %}
+            {% endif %}
+            <td class="base">{{ (brut * cotisation.getSalarialeBase()/100)|number_format(2, ',', ' ') }}&euro;</td>
+            <td class="taux">{{ cotisation.getSalarialeTaux() }}%</td>
+            <td class="montant light">{{ montantSalariale|number_format(2, ',', ' ') }}&euro;</td>
+        {% else %}
+            <td class="base"></td>
+            <td class="taux"></td>
+            <td class="montant light"></td>
+        {% endif %}
+
+        {% if cotisation.getPatronaleTaux() != 0 %}
+            {% set montantPatronale = (brut * cotisation.getPatronaleBase()/100 * cotisation.getPatronaleTaux()/100) %}
+            {% set totalPatronale = totalPatronale + montantPatronale %}
+            <td class="base">{{ (brut * cotisation.getPatronaleBase()/100)|number_format(2, ',', ' ') }}&euro;</td>
+            <td class="taux">{{ cotisation.getPatronaleTaux() }}%</td>
+            <td class="montant light">{{ montantPatronale|number_format(2, ',', ' ') }}&euro;</td>
+        {% else %}
+            <td class="base"></td>
+            <td class="taux"></td>
+            <td class="montant light"></td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td class="nom"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+    </tr>
+
+
+    <tr>
+        <td class="nom"></td>
+        <td colspan="2" class="label">Total cotisation:</td>
+        <td class="montant label">{{ totalSalariale |number_format(2, ',', ' ') }}&euro;</td>
+        <td class="base label"></td>
+        <td class="taux label"></td>
+        <td class="montant label">{{ totalPatronale |number_format(2, ',', ' ') }}&euro;</td>
+    </tr>
+
+    <tr>
+        <td class="nom"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+    </tr>
+
+
+    <tr>
+        <td class="nom"></td>
+        <td colspan="5" class="label">Net à payer:</td>
+        <td class="label">{{ (brut - totalSalariale) |number_format(2, ',', ' ') }}&euro;</td>
+    </tr>
+    <tr>
+        <td class="nom"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+        <td class="base"></td>
+        <td class="taux"></td>
+        <td class="montant"></td>
+    </tr>
+    <tr>
+        <td class="nom" style="font-size: larger">Payer le: 31/{{ "now"|date("m/Y") }}</td>
+        <td colspan="5" class="label">Salaire net imposable:</td>
+        <td class="label">{{ (brut - totalSalariale + montant_csg) |number_format(2, ',', ' ') }}&euro;</td>
+    </tr>
+
+</table>
+
+</body>
+</html>
+

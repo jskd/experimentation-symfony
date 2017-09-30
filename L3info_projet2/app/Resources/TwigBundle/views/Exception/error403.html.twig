@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Erreur 403 - Une authentification est nécessaire{% endblock %}
+{% block title_page_header %} Erreur 403 {% endblock %}
+{% block subtitle_page_header %} Une authentification est nécessaire {% endblock %}
+
+{% block body %}
+    <p>
+        Une authentification est nécessaire pour accéder à la ressource.
+        <ul>
+            <li>Générateur de fiche de paie: service paie</li>
+            <li>Forum Discussion publique: lecture: tout le monde ecriture: utilisateur</li>
+            <li>Forum Discussion privée: lecture/ecriture salarié</li>
+    <li>Forum Discussion moderateur: lecture/ecriture moderateur</li>
+        </ul>
+        <a href="{{ path('homepage') }}">retourner dans la page d'accueil</a>.
+    </p>
+{% endblock %}

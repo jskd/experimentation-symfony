@@ -1,0 +1,4 @@
+services:
+#    salarie.example:
+#        class: SalarieBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

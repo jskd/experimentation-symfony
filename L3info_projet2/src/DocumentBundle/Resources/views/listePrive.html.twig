@@ -1,0 +1,45 @@
+<h2>Mes documents</h2>
+
+{% if pagination.getTotalItemCount > 0 %}
+
+    <div class="count">
+        Nombre de document: {{ pagination.getTotalItemCount }}
+    </div>
+    <table>
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'Titre', 'd.titre') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Date', 'd.creation_date') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'filename', 'd.filename') }}</th>
+            <th>Lien de partage</th>
+        </tr>
+
+        {# table body #}
+        {% for d in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td>{{ d.titre }}</td>
+                <td>{{ d.creation_date|date('d/m/Y H:i:s') }}</td>
+                <td>{{ d.filename }}</td>
+                {% if d.publique == true %}
+                    <td><input value="{{ absolute_url(path('document_information', { "id": d.id })) }}"/></td>
+                {% else %}
+                    <td>
+                        <input value="{{ absolute_url(path('document_information', { "id": d.id, "key": d.clef })) }}"/>
+                    </td>
+                {% endif %}
+                <td><a type="button" class="btn btn-info"
+                       href="{{ path('document_modification', { "id": d.id }) }}">Modification</a></td>
+                <td><a type="button" class="btn btn-danger"
+                       href="{{ path('document_suppression', { "id": d.id }) }}">Suppression</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endif %}
+
+    {# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
+
+<a type="button" class="btn btn-default" href="{{ path('document_nouveau') }}">Nouveau document</a>
